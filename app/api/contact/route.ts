@@ -1,7 +1,5 @@
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 function sanitize(str: unknown): string {
   if (typeof str !== "string") return "";
   return str.replace(/[<>]/g, "").trim().slice(0, 2000);
@@ -35,6 +33,7 @@ export async function POST(request: Request) {
   }
 
   try {
+    const resend = new Resend(process.env.RESEND_API_KEY || "re_placeholder");
     await resend.emails.send({
       from: "Portfolio Contact <onboarding@resend.dev>",
       to: process.env.CONTACT_TO_EMAIL!,
